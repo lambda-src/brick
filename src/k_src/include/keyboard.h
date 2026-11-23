@@ -3,7 +3,7 @@
 
 #include "ntypes.h"
 
-// TODO: Write an actual driver also this blocks and sucks
+// i <3 bios
 i8 __cdecl get_char();
 #pragma aux get_char = \
     "xor ah, ah" \

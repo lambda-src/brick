@@ -1,7 +1,6 @@
 #include "shell.h"
 #include "vga.h"
 #include "keyboard.h"
-#include "ds.h"
 
 static i8 key_buffer[0x40];
 

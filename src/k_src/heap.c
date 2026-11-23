@@ -31,7 +31,6 @@ static u8 get_free_seg(u16 size) {
 void __far *alloc(u16 size) {
     const u16 aligned_size = ALIGN2(size);
     const u8 free_seg = get_free_seg(aligned_size);
-    u16 i;
     u16 free_pos;
     // if no free segs then return null
     if (free_seg == SEGNOTFOUND) {
