@@ -5,7 +5,7 @@ Brick is a 16 bit operating system written from scratch with Watcom C (C89 compi
 - [x] Bootloader loads kernel into memory and setups registers then enters the kernel
 - [x] VGA screen driver for writing text to the screen
 - [x] Heap allocater for dynamic memory allocation
-- [ ] Processes 
+- [x] Processes 
 - [ ] Handling interrupts
 - [ ] Basic usable shell 
 
