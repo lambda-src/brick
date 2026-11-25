@@ -5,7 +5,8 @@
 #include "asm.h"
 
 // heap lives in segments 0x2000 - 0x8000 giving us 7 possible segments to store each process in if zero heap allocations
-#define MAX_PROCS 7
+// butttttt we should leave 1 segment avaiable for heap allocations so only allow 6 processes at once 
+#define MAX_PROCS 6
 
 static u16 cur_pid;
 static Process procs[MAX_PROCS];
@@ -56,12 +57,11 @@ void yield() {
 }
 
 static void process_exit() {
-    procs[cur_pid].status = UNUSED;    // can't free our own stack while on it; reaped on slot reuse
-    switch_to(pick_next());            // pid 0 is always READY/RUNNING so this finds something
+    procs[cur_pid].status = UNUSED;
+    switch_to(pick_next());
 }
 
-// lives in this file so the near ret from context_switch lands in the same code segment
-static void proc_entry(void) {
+static void proc_entry() {
     procs[cur_pid].entry(NULL);
     process_exit();
 }
@@ -97,12 +97,12 @@ i16 create_process(void (*callback)(void *args)) {
     ds = get_ds();
     sp = (u16 __far *)FPTR(FSEG(mem), MAXALLOCSIZE);
     *--sp = (u16)proc_entry; // ip
-    *--sp = 0x200;                          // flags (enable interupts so far)
-    *--sp = 0;                              // bp
-    *--sp = 0;                              // si
-    *--sp = 0;                              // di
-    *--sp = ds;                             // ds
-    *--sp = ds;                             // es
+    *--sp = 0x200;           // flags (enable interupts so far)
+    *--sp = 0;               // bp
+    *--sp = 0;               // si
+    *--sp = 0;               // di
+    *--sp = ds;              // ds
+    *--sp = ds;              // es
     proc->ctx.ss = FSEG(mem);
     proc->ctx.sp = FOFF(sp);
     proc->status = READY;
